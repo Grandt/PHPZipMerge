@@ -1,7 +1,7 @@
 {
     "name": "grandt/phpzipmerge",
     "type": "library",
-    "description": "Package to create and stream archives of compressed files in ZIP format with PHP 5.3+",
+    "description": "Merge and stream multiple Zip files on the fly.",
     "keywords": ["phpzip", "zip", "pkzip", "archive", "compressed", "compression", "stream", "merge"],
     "homepage": "https://github.com/Grandt/PHPZipMerge",
     "license": "LGPL-2.1",
