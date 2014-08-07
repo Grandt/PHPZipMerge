@@ -1,4 +1,4 @@
-# ZipStream
+# ZipMerge
 ## Combine and stream the contents of multiple existing Zip files, as a single file, /without/ recompressing the data within.
 
 This is useful if you have often used static content that needs to be collected and sent to the client.

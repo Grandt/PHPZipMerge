@@ -5,7 +5,7 @@
     "keywords": ["phpzip", "zip", "pkzip", "archive", "compressed", "compression", "stream", "merge"],
     "homepage": "https://github.com/Grandt/PHPZipMerge",
     "license": "LGPL-2.1",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "A. Grandt",
