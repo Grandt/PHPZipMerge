@@ -98,7 +98,6 @@ class ZipMerge {
             if (!empty($subPath)) {
                 $path = explode('/', $subPath);
                 $subPath .= '/';
-                print_r($path);
                 $nPath = '';
 
                 foreach ($path as $dir) {
