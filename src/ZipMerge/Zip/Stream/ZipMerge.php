@@ -106,6 +106,11 @@ class ZipMerge {
                     $data = $fileEntry->getLocalHeader();
                     $this->zipWrite($data);
 
+                    $lf = $fileEntry->getLocalHeader();
+                    $lfLen =  BinStringStatic::_strlen($lf);
+                    $fileEntry->offset = $this->entryOffset;
+                    $this->entryOffset += $lfLen;
+
                     $this->FILES[$this->LFHindex++] = $fileEntry;
                     $this->CDRindex++;
                 }
@@ -168,7 +173,7 @@ class ZipMerge {
                     $data = fread($handle, $len);
                     $this->zipWrite($data);
                 }
-                
+
                 $fileEntry->offset = $this->entryOffset;
                 $this->entryOffset += $lfLen + $fileEntry->gzLength;
             } else if ($pkHeader === AbstractZipHeader::ZIP_END_OF_CENTRAL_DIRECTORY) {
@@ -216,6 +221,20 @@ class ZipMerge {
 
     public function getFileEntries() {
         return $this->FILES;
+    }
+
+    /**
+     * @return null|\ZipMerge\Zip\Core\Header\EndOfCentralDirectory
+     */
+    public function getEocd() {
+        return $this->eocd;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEntryOffset() {
+        return $this->entryOffset;
     }
 
     /*
