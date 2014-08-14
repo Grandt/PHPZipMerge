@@ -27,7 +27,7 @@ use ZipMerge\Zip\Listener\ZipArchiveListener;
 
 class ZipMerge {
     const APP_NAME = 'PHPZipMerge';
-    const VERSION = "1.0.0";
+    const VERSION = "1.0.2";
     const MIN_PHP_VERSION = 5.3; // for namespaces
     
     const CONTENT_TYPE = 'application/zip';

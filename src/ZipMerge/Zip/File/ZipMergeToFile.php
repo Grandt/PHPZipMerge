@@ -1,9 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Grandt
- * Date: 14-08-14
- * Time: 09:23
+ * ZipMerge will allow the user to combine multiple Zip files into one, while streaming the result directly to
+ *  the client.
+ * The contents of the Zip Files added will NOT be re-compressed.
+ *
+ * The primary use is for the user to be able to pre-assemble often used, static content, saving server time on
+ *  subsequent use.
+ * Another use case is to combine collections of for existing packages/collections of data the client may have
+ *  purchased, and allow them to download these on the fly in a single file.
+ * @author Grandt
  */
 
 namespace ZipMerge\Zip\File;
