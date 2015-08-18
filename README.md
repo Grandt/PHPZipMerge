@@ -13,7 +13,7 @@ The contents of each Zip file added, can even be placed in separate sub folders.
 ### Import
 Add this requirement to your `composer.json` file:
 ```json
-   "grandt/phpzipmerge": ">=1.0.3"
+   "grandt/phpzipmerge": ">=1.0.4"
 ```
 
 ### Composer
@@ -36,7 +36,7 @@ Once composer is installed you can create the `composer.json` file to import thi
 ```json
 {
     "require": {
-        "grandt/phpzipmerge": ">=1.0.3",
+        "grandt/phpzipmerge": ">=1.0.4",
         "php": ">=5.3.0"
     }
 }

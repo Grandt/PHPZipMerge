@@ -141,19 +141,19 @@ class ZipFileEntry extends AbstractZipHeader {
             $this->versionMadeBy            = fread($handle, 2);
             $this->versionNeeded            = fread($handle, 2);
             $arr = unpack("v2wa", fread($handle, 4));
-            $this->gpFlags                    = $arr['wa1'];
-            $this->gzType                    = $arr['wa2'];
-            $this->dosTime                    = fread($handle, 4);
+            $this->gpFlags                  = $arr['wa1'];
+            $this->gzType                   = $arr['wa2'];
+            $this->dosTime                  = fread($handle, 4);
             $arr = unpack("V3dwa/v3wa", fread($handle, 18));
             // $this->fileCRC32                = $arr['dwa1'];
-            // $this->gzLength                    = $arr['dwa2'];
-            // $this->dataLength                = $arr['dwa3'];
-            $filePathLength                    = $arr['wa1'];
+            // $this->gzLength                 = $arr['dwa2'];
+            // $this->dataLength               = $arr['dwa3'];
+            $filePathLength                 = $arr['wa1'];
             $centralExtraFieldLength        = $arr['wa2'];
-            $fileCommentLength                = $arr['wa3'];
-            $this->discNumberStart            = fread($handle, 2);
-            $this->internalFileAttributes    = fread($handle, 2);
-            $this->externalFileAttributes    = fread($handle, 4);
+            $fileCommentLength              = $arr['wa3'];
+            $this->discNumberStart          = fread($handle, 2);
+            $this->internalFileAttributes   = fread($handle, 2);
+            $this->externalFileAttributes   = fread($handle, 4);
             // $arr = unpack("V", fread($handle, 4));
             // $this->relativeOffsetOfLocalHeader    = $arr[1];
 
@@ -167,8 +167,8 @@ class ZipFileEntry extends AbstractZipHeader {
                     $ef = AbstractExtraField::decodeField($handle, false);
                     /* @var $ef AbstractExtraField */
 
-                    $ef2 = $this->extraFieldsArray[$ef->header];
-                    if (isset($ef2)) {
+                    if (in_array($ef->header, $this->extraFieldsArray)) {
+                        $ef2 = $this->extraFieldsArray[$ef->header];
                         $ef2->centralData = $ef->centralData;
                     } else {
                         $this->extraFieldsArray[$ef->header] = $ef;
@@ -190,7 +190,8 @@ class ZipFileEntry extends AbstractZipHeader {
 
     public function addPath($path) {
         $this->path = AbstractZipHeader::pathJoin($path, $this->path);
-        if (isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_PATH])) {
+        if (in_array(AbstractExtraField::HEADER_UNICODE_PATH, $this->extraFieldsArray)
+            && isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_PATH])) {
             $ef = $this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_PATH];
             $ef->CRC32 = crc32($this->path);
             $ef->utf8Data = AbstractZipHeader::pathJoin($path, $ef->utf8Data);
@@ -243,7 +244,8 @@ class ZipFileEntry extends AbstractZipHeader {
 
     public function prependPath($path) {
         $this->path = AbstractZipHeader::pathJoin($path, $this->path);
-        if (isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_PATH])) {
+        if (in_array(AbstractExtraField::HEADER_UNICODE_PATH, $this->extraFieldsArray)
+            && isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_PATH])) {
             $ef = $this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_PATH];
             $ef->CRC32 = crc32($this->path);
             $ef->utf8Data = AbstractZipHeader::pathJoin($path, $ef->utf8Data);
@@ -252,21 +254,23 @@ class ZipFileEntry extends AbstractZipHeader {
 
     public function setFileComment($comment) {
         $this->comment = $comment;
-        if (isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT])) {
+        if (in_array(AbstractExtraField::HEADER_UNICODE_COMMENT, $this->extraFieldsArray)
+            && isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT])) {
             $ef = $this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT];
             $ef->CRC32 = crc32($this->comment);
         }
     }
 
     public function setUTF8FileComment($comment) {
-        if (!isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT])) {
+        if (in_array(AbstractExtraField::HEADER_UNICODE_COMMENT, $this->extraFieldsArray)
+            && isset($this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT])) {
+            $ef = $this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT];
+            $ef->utf8Data = $comment;
+        } else {
             $ef = new UnicodeCommentExtraField();
             $ef->CRC32 = crc32($this->comment);
             $ef->utf8Data = $comment;
             $this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT] = $ef;
-        } else {
-            $ef = $this->extraFieldsArray[AbstractExtraField::HEADER_UNICODE_COMMENT];
-            $ef->utf8Data = $comment;
         }
     }
 
